@@ -1,0 +1,92 @@
+.sign {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  overflow: hidden;
+
+  &-nav {
+    &-item {
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: left -35vh;
+    }
+  }
+
+  &-body {
+    top: 30%;
+    position: relative;
+    transform: translateY(-30%);
+  }
+
+  &-logo {
+    fill: #2c3e50;
+    margin-bottom: 32px;
+  }
+
+  &-sidebar {
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100%;
+    padding: 16px;
+    position: absolute;
+
+    /deep/
+    .el {
+      &-form-item {
+        &__label {
+          width: 70px;
+          min-width: 70px;
+        }
+
+        &__content {
+          width: calc(100% - 70px);
+        }
+      }
+
+      &-input-group__append {
+        padding: 0;
+        height: 30px;
+        cursor: pointer;
+        min-width: 50px;
+      }
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .sign {
+    &-logo {
+      fill: #f0f1ef;
+    }
+
+    /deep/
+    .el {
+      &-checkbox__label,
+      &-form-item__label {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.nav-item {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: absolute;
+  animation: nav-item 1s;
+}
+
+@keyframes nav-item {
+  0% {
+    width: 0;
+  }
+}
