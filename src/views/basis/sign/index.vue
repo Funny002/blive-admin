@@ -97,7 +97,7 @@ export default class SignIndex extends Vue {
     const hours = new Date().getHours();
     if (hours > 20 || hours < 6) return 1;
     // 2，3，4，5，6，7，8 => [6, 8, 10, 12, 14, 16, 18]
-    return parseInt(`${(hours - 6) / 2}`) + 1
+    return parseInt(`${(hours - 4) / 2}`) + 1
   }
 
   switchBackImage() {
