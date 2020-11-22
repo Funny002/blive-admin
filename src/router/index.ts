@@ -15,7 +15,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // 验证 token
     const Token = Cookie.get('Token')
-    if (!Token && to.path !== "/sign") {
+    if (!Token && to.path.indexOf('/sign') !== 0) {
         next({path: "/sign"})
     } else {
         next()

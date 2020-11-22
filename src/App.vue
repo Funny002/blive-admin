@@ -1,7 +1,5 @@
 <template>
-  <div id="App" class="var-theme">
-    <router-view/>
-  </div>
+  <router-view/>
 </template>
 
 <style lang="scss">

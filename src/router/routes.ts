@@ -1,16 +1,26 @@
-import {RouteConfig} from "vue-router";
-
-import Sign from '@/views/basis/sign/index.vue'
 import Cookie from "@/plugin/cookie";
+import {RouteConfig} from "vue-router";
 
 const routes: Array<RouteConfig> = [{
     name: "Index",
     path: "/",
-    component: () => import(/* webpackChunkName: "basis" */ '@/views/module/index/index.vue')
+    redirect: '/index',
+    component: () => import(/* webpackChunkName: "basis" */ '@/views/theme/index.vue'),
+    children: [{
+        path: 'index',
+        component: () => import('@/views/module/index/index.vue')
+    }, {
+        path: "setting",
+        component: () => import('@/views/module/setting/index.vue')
+    }]
+}, {
+    name: "activation",
+    path: "/sign/activation",
+    component: () => import(/* webpackChunkName: "basis" */  '@/views/basis/activation/index.vue'),
 }, {
     name: 'Sign',
     path: '/sign',
-    component: Sign,
+    component: () => import(/* webpackChunkName: "basis" */  '@/views/basis/sign/index.vue'),
     beforeEnter: (to, form, next) => {
         // 验证 token
         const Token = Cookie.get('Token')
@@ -20,6 +30,10 @@ const routes: Array<RouteConfig> = [{
             next()
         }
     }
+}, {
+    name: 'Error',
+    path: '*',
+    component: () => import(/* webpackChunkName: "basis" */  '@/views/basis/error/index.vue')
 }]
 
 export default routes;

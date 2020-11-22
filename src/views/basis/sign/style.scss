@@ -38,55 +38,53 @@
     padding: 16px;
     position: absolute;
 
-    /deep/
-    .el {
-      &-form-item {
-        &__label {
-          width: 70px;
-          min-width: 70px;
-        }
+    .form-list {
+      &-code {
+        display: inline-table;
 
-        &__content {
-          width: calc(100% - 70px);
+        /deep/
+        .el-input-group__append {
+          padding: 0;
+          height: 32px;
+
+          > img {
+            display: block;
+            line-height: 0;
+          }
         }
       }
 
-      &-input-group__append {
-        padding: 0;
-        height: 30px;
-        cursor: pointer;
-        min-width: 50px;
+      /deep/
+      .el {
+        &-form-item {
+          &__label {
+            width: 70px;
+            min-width: 70px;
+
+            &::before {
+              display: none;
+            }
+          }
+
+          &__content {
+            width: calc(100% - 70px);
+          }
+        }
       }
     }
   }
-}
 
-@media (prefers-color-scheme: dark) {
-  .sign {
-    &-logo {
-      fill: #f0f1ef;
-    }
-
-    /deep/
-    .el {
-      &-checkbox__label,
-      &-form-item__label {
-        color: #ffffff;
-      }
-    }
+  .nav-item {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: absolute;
+    animation: nav-item 1s;
   }
-}
 
-.nav-item {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: absolute;
-  animation: nav-item 1s;
-}
-
-@keyframes nav-item {
-  0% {
-    width: 0;
+  @keyframes nav-item {
+    0% {
+      width: 0;
+    }
   }
 }

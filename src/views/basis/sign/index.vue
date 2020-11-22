@@ -18,10 +18,10 @@
             </g>
           </svg>
         </div>
-        <form-list :form-value="form.value" :form-list="form[!isCreate ? 'list' : 'list_']">
-          <template slot="code">
-            <el-form-item label="验证码">
-              <el-input v-model="form.value.code">
+        <form-list ref="formList" :form-value="form.value" :form-list="form[!isCreate ? 'list' : 'list_']" :rules="form.rules">
+          <template slot="code" slot-scope="{data}">
+            <el-form-item :label="data.label" :prop="data.prop">
+              <el-input class="form-list-code" v-model="form.value[data.name]">
                 <template slot="append">
                   <img :src="codeImage" style="display: block; height: 100%;" alt="code" @click="ResetImage">
                 </template>
@@ -30,9 +30,9 @@
           </template>
         </form-list>
         <div style="display: flex; align-items: center; padding-left: 70px;">
-          <el-checkbox v-if="!isCreate" v-model="isRemember">记住密码</el-checkbox>
-          <span style="margin: 0 auto;"/>
+          <!--          <el-checkbox v-if="!isCreate" v-model="isRemember">记住密码</el-checkbox>-->
           <el-button @click="switchClick" type="text">{{ !isCreate ? '去注册' : '去登录' }}</el-button>
+          <span style="margin: 0 auto;"/>
           <el-button type="primary" style="min-width: 80px;" @click="signIn" v-if="!isCreate">登录</el-button>
           <el-button type="primary" style="min-width: 80px;" @click="signUp" v-else>注册</el-button>
         </div>
@@ -42,7 +42,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator'
+import sign from '@/api/sign'
+import Cookie from "@/plugin/cookie";
+import {codeVerify} from "@/api/api";
+import {isEmail} from "@/utils/validator";
+import {Component, Vue} from 'vue-property-decorator';
 import FormList from "@/components/formList/formList.vue";
 
 @Component({
@@ -54,34 +58,77 @@ export default class SignIndex extends Vue {
   isCreate = false; // 是否注册
   isRemember = false; // 记住密码
   background = {keys: 0, image: '', nav: ''}
+  message: '邮箱不能为空'
   form = {
     value: {},
     list: {
-      'a': {type: 'input', label: "账号", name: "user"},
-      'b': {type: 'password', label: "密码", name: "password"},
-      'c': {slot: 'code'},
+      'a': {type: 'input', label: "账号", name: "user", prop: 'user'},
+      'b': {type: 'password', label: "密码", name: "pass", prop: 'pass'},
+      'c': {slot: 'code', label: "验证码", name: "code", prop: 'code'},
     },
     list_: {
-      'a': {type: 'input', label: "账号", name: "user"},
-      'b': {type: 'password', label: "密码", name: "password"},
-      'c': {type: 'password', label: "确认密码", name: "passwordS"},
-      'd': {slot: 'code'},
-      'e': {type: 'input', label: "扩展码", name: "expandCode"},
+      'a': {type: 'input', label: "账号", name: "user", prop: 'user'},
+      'b': {type: 'input', label: "邮箱", name: "email", prop: 'email'},
+      'c': {type: 'password', label: "密码", name: "pass", prop: 'pass'},
+      'd': {slot: 'code', label: "验证码", name: "code", prop: 'code'},
+      // 'e': {type: 'input', label: "扩展码", name: "expandCode"},
+    },
+    rules: {
+      user: [
+        {required: true, message: '账号不能为空', trigger: 'change'},
+        {required: true, min: 4, message: '不能小于4位', trigger: 'change'},
+      ],
+      pass: [
+        {required: true, message: '密码不能为空', trigger: 'change'},
+        {required: true, min: 6, message: '不能小于6位', trigger: 'change'},
+      ],
+      code: [
+        {required: true, message: '验证码不能为空', trigger: 'change'}
+      ],
+      email: [
+        {required: true, validator:isEmail, trigger: 'change'}
+      ]
     }
   }
   imagePath = (Keys: number) => require(`../../../assets/动态背景/macOS-Big-Sur-${Keys}.jpg`);
 
   signIn() {
-    console.log(this.form.value)
+    this.$refs.formList.validate((status: boolean) => {
+      status && sign('login', {
+        data: this.form.value,
+        success: ({token}) => {
+          Cookie.set('Token', token) // 设置 Token
+          this.$router.push({path: '/index'})
+        },
+        error: ({code, msg}) => {
+          code === 204 && this.ResetImage()
+          this.$message.error(msg)
+        }
+      })
+    })
   }
 
   signUp() {
-    console.log(this.form.value)
+    this.$refs.formList.validate((status: boolean) => {
+      status && sign('create', {
+        data: this.form.value,
+        success: ({msg}) => {
+          this.$message.success(msg);
+        },
+        error: ({msg}) => {
+          this.$message.error(msg)
+        }
+      })
+    })
   }
 
   switchClick() {
-    this.isCreate = !this.isCreate
     this.formReset();
+    this.ResetImage();
+    this.isCreate = !this.isCreate
+    this.$refs.formList.$nextTick(() => {
+      this.$refs.formList.clearValidate()
+    })
   }
 
   formReset() {
@@ -90,12 +137,12 @@ export default class SignIndex extends Vue {
   }
 
   ResetImage() {
-    this.codeImage = 'http://127.0.0.1:8000/api/sign/verify?t=' + new Date().getTime()
+    this.codeImage = `${codeVerify}?uuid=${window.Config['uuid']}&t=` + new Date().getTime();
   }
 
   backgroundKeys() {
     const hours = new Date().getHours();
-    if (hours > 20 || hours < 6) return 1;
+    if (hours >= 20 || hours <= 6) return 1;
     // 2，3，4，5，6，7，8 => [6, 8, 10, 12, 14, 16, 18]
     return parseInt(`${(hours - 4) / 2}`) + 1
   }
