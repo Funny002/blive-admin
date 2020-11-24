@@ -18,10 +18,10 @@
             </g>
           </svg>
         </div>
-        <form-list ref="formList" :form-value="form.value" :form-list="form[!isCreate ? 'list' : 'list_']" :rules="form.rules">
-          <template slot="code" slot-scope="{data}">
+        <form-list ref="formList" :form-value="form.value" :form-list="form[!isCreate ? 'list' : 'list_']" :form-rules="form.rules" label-width="80px">
+          <template slot="code" slot-scope="{item:data}">
             <el-form-item :label="data.label" :prop="data.prop">
-              <el-input class="form-list-code" v-model="form.value[data.name]">
+              <el-input class="form-list-code" v-model="form.value[data.name]" @keyup.enter.native="signIn" select-when-unmatched>
                 <template slot="append">
                   <img :src="codeImage" style="display: block; height: 100%;" alt="code" @click="ResetImage">
                 </template>
@@ -47,7 +47,7 @@ import Cookie from "@/plugin/cookie";
 import {codeVerify} from "@/api/api";
 import {isEmail} from "@/utils/validator";
 import {Component, Vue} from 'vue-property-decorator';
-import FormList from "@/components/formList/formList.vue";
+import FormList from "@/components/formList/index.vue";
 
 @Component({
   components: {FormList}
@@ -57,18 +57,18 @@ export default class SignIndex extends Vue {
   codeImage = '';// 验证码图片
   isCreate = false; // 是否注册
   isRemember = false; // 记住密码
-  background = {keys: 0, image: '', nav: ''}
-  message: '邮箱不能为空'
+  background = {keys: 0, image: '', nav: ''};
+  // message: '邮箱不能为空'
   form = {
     value: {},
     list: {
-      'a': {type: 'input', label: "账号", name: "user", prop: 'user'},
+      'a': {type: 'text', label: "账号", name: "user", prop: 'user'},
       'b': {type: 'password', label: "密码", name: "pass", prop: 'pass'},
       'c': {slot: 'code', label: "验证码", name: "code", prop: 'code'},
     },
     list_: {
-      'a': {type: 'input', label: "账号", name: "user", prop: 'user'},
-      'b': {type: 'input', label: "邮箱", name: "email", prop: 'email'},
+      'a': {type: 'text', label: "账号", name: "user", prop: 'user'},
+      'b': {type: 'text', label: "邮箱", name: "email", prop: 'email'},
       'c': {type: 'password', label: "密码", name: "pass", prop: 'pass'},
       'd': {slot: 'code', label: "验证码", name: "code", prop: 'code'},
       // 'e': {type: 'input', label: "扩展码", name: "expandCode"},
@@ -86,14 +86,14 @@ export default class SignIndex extends Vue {
         {required: true, message: '验证码不能为空', trigger: 'change'}
       ],
       email: [
-        {required: true, validator:isEmail, trigger: 'change'}
+        {required: true, validator: isEmail, trigger: 'change'}
       ]
     }
   }
   imagePath = (Keys: number) => require(`../../../assets/动态背景/macOS-Big-Sur-${Keys}.jpg`);
 
   signIn() {
-    this.$refs.formList.validate((status: boolean) => {
+    (this.$refs.formList as FormList).validate((status: boolean) => {
       status && sign('login', {
         data: this.form.value,
         success: ({token}) => {
@@ -109,7 +109,7 @@ export default class SignIndex extends Vue {
   }
 
   signUp() {
-    this.$refs.formList.validate((status: boolean) => {
+    (this.$refs.formList as FormList).validate((status: boolean) => {
       status && sign('create', {
         data: this.form.value,
         success: ({msg}) => {
@@ -125,9 +125,9 @@ export default class SignIndex extends Vue {
   switchClick() {
     this.formReset();
     this.ResetImage();
-    this.isCreate = !this.isCreate
-    this.$refs.formList.$nextTick(() => {
-      this.$refs.formList.clearValidate()
+    this.isCreate = !this.isCreate;
+    (this.$refs.formList as Vue).$nextTick(() => {
+      (this.$refs.formList as FormList).clearValidate()
     })
   }
 

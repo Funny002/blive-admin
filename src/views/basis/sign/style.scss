@@ -40,17 +40,12 @@
 
     .form-list {
       &-code {
-        display: inline-table;
+        display: inline-table !important;
 
         /deep/
         .el-input-group__append {
           padding: 0;
           height: 32px;
-
-          > img {
-            display: block;
-            line-height: 0;
-          }
         }
       }
 

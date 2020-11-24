@@ -1,0 +1,23 @@
+.formList {
+  width: 100%;
+
+  /deep/
+  .el-form-item {
+    display: flex;
+
+    &__content {
+      width: 100%;
+      display: flex;
+      margin-left: inherit !important;
+
+      > div {
+        width: 100%;
+        display: block;
+      }
+
+      > .el-date-editor {
+        display: inline-flex;
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 <template>
   <div class="SettingMenu">
 
-    <div style="display: flex; width: 100%; margin-bottom: 10px;">
-      <form-list :form-list="formList" :form-value="formValue" :form-gutter="10"/>
+    <div style="display: flex; width: 100%; margin-bottom: 10px; height: 32px;">
+      <form-list :form-list="formList" :form-value="formValue" :row-gutter="10" label-width="10px"/>
       <div style="display: flex; margin-left: 10px;">
         <el-button type="primary" icon="el-icon-search">搜索</el-button>
         <el-button type="info" icon="el-icon-delete">清空</el-button>
@@ -39,7 +39,8 @@
 import {Component, Vue} from "vue-property-decorator";
 import TableList from "@/components/tableList/tableList.vue";
 import {menuList} from "@/api/menu";
-import FormList from "@/components/formList/formList.vue";
+import FormList from "@/components/formList/index.vue";
+import {FormItem} from "@/components/formList/interface";
 
 @Component({
   components: {FormList, TableList}
@@ -48,11 +49,11 @@ export default class SettingMenu extends Vue {
   page = {currPage: 1, total: 0};
   //
   formValue = {};
-  formList = [
-    {span: 5, placeholder: "标题", type: 'input', name: "user"},
-    {span: 8, placeholder: "创建时间", type: 'dates', name: "user"},
-    {span: 8, placeholder: "修改时间", type: 'dates', name: "user"},
-    {span: 3, placeholder: "状态", type: 'select', name: "user", select: [{label: '启用', value: 1}, {label: '停用', value: 0}]},
+  formList: FormItem[] = [
+    {span: 5, placeholder: "标题", type: 'text', name: "name"},
+    {span: 8, placeholder: ['创建开始时间', '创建结束时间'], type: 'daterange', name: "create_time"},
+    {span: 8, placeholder: ['修改开始时间', '修改结束时间'], type: 'daterange', name: "update_time"},
+    {span: 3, placeholder: "状态", type: 'select', name: "state", select: [{label: '启用', value: 1}, {label: '停用', value: 0}]},
   ];
   //
   tableList = {

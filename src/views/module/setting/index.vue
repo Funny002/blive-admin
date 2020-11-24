@@ -40,8 +40,15 @@ export default class Setting extends Vue {
   height: 100%;
   display: flex;
 
+
   &-tabs {
     flex: 0 0 auto;
+
+    /deep/
+    .el-tabs__header {
+      background-color: #fff;
+      border-radius: 8px 0 0 8px;
+    }
   }
 
   &-body {
