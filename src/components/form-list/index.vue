@@ -22,7 +22,7 @@
 <script lang="ts">
 import FormListItem from './index-item.vue';
 import {Component, Prop, Vue} from 'vue-property-decorator'
-import {FormItem, ItemRules} from "@/components/formList/interface";
+import {FormItem, ItemRules} from "@/components/form-list/interface";
 import {Form as ElForm} from "element-ui";
 
 @Component({components: {FormListItem}})

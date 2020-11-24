@@ -37,10 +37,10 @@
 </template>
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import TableList from "@/components/tableList/tableList.vue";
+import TableList from "@/components/table-list/tableList.vue";
 import {menuList} from "@/api/menu";
-import FormList from "@/components/formList/index.vue";
-import {FormItem} from "@/components/formList/interface";
+import FormList from "@/components/form-list/index.vue";
+import {FormItem} from "@/components/form-list/interface";
 
 @Component({
   components: {FormList, TableList}

@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import {FormItem} from "@/components/formList/interface";
+import {FormItem} from "@/components/form-list/interface";
 
 @Component
 export default class FormSelect extends Vue {
