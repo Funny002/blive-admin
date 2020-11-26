@@ -47,7 +47,7 @@ import Cookie from "@/plugin/cookie";
 import {codeVerify} from "@/api/api";
 import {isEmail} from "@/utils/validator";
 import {Component, Vue} from 'vue-property-decorator';
-import FormList from "@/components/form-list/index.vue";
+import FormList from "@/components/form-list/form-list.vue";
 
 @Component({
   components: {FormList}

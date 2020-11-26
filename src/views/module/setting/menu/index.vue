@@ -10,19 +10,28 @@
       </div>
     </div>
 
-    <table-list :table-data="tableList.data" :table-head="tableList.head">
-      <template slot="icon" slot-scope="{row}">
-        <el-icon :name="row['icon']"/>
-      </template>
-      <template slot="status" slot-scope="{row}">
-        <el-tag :type="row['statusType']">{{ row['statusName'] }}</el-tag>
-      </template>
-      <template slot="button" slot-scope="{row}">
-        <el-button v-if="row['status']" type="text" @click.stop="TableListSave(row)">停用</el-button>
-        <el-button v-else type="text" @click.stop="TableListSave(row)">启用</el-button>
-        <el-button type="text" @click.stop="TableListSave(row)">修改</el-button>
-        <el-button type="text" @click.stop="TableListRemove(row)">删除</el-button>
-      </template>
+    <!--    <table-list :table-data="tableList.data" :table-head="tableList.head">-->
+    <table-list :data="tableList.data" :table-head="tableList.head">
+      <el-table-column slot="icon" slot-scope="{item}" :label="item.label" :prop="item.prop" :width="item.width" align="center" header-align="" :sortable="item.sortable">
+        <template slot-scope="{row}">
+          <el-icon :name="row['icon']"/>
+        </template>
+      </el-table-column>
+
+      <el-table-column slot="status" slot-scope="{item}" :label="item.label" :prop="item.prop" :width="item.width" align="center" :sortable="item.sortable">
+        <template slot-scope="{row}">
+          <el-tag :type="row['statusType']">{{ row['statusName'] }}</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column slot="button" slot-scope="{item}" :label="item.label">
+        <template slot-scope="{row}">
+          <el-button v-if="row.state" type="text" @click.stop="TableListSave(row)">停用</el-button>
+          <el-button v-else type="text" @click.stop="TableListSave(row)">启用</el-button>
+          <el-button type="text" @click.stop="TableListSave(row)">修改</el-button>
+          <el-button type="text" @click.stop="TableListRemove(row)">删除</el-button>
+        </template>
+      </el-table-column>
     </table-list>
 
     <el-pagination
@@ -37,10 +46,12 @@
 </template>
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import TableList from "@/components/table-list/tableList.vue";
+import TableList from "@/components/table-list/table-list.vue";
+// import TableList from "@/components/table-list/index.vue";
 import {menuList} from "@/api/menu";
-import FormList from "@/components/form-list/index.vue";
+import FormList from "@/components/form-list/form-list.vue";
 import {FormItem} from "@/components/form-list/interface";
+import {TableHead} from "@/components/table-list/interface";
 
 @Component({
   components: {FormList, TableList}
@@ -58,17 +69,22 @@ export default class SettingMenu extends Vue {
   //
   tableList = {
     head: [
-      {label: '主键', prop: 'id', content: 'id', width: '68px'},
+      {label: '序号', type: 'index', width: '70px'},
+      // {label: '单选框', type: 'radio', width: '70px'},
+      // {label: '序号', type: 'selection', width: '70px'},
+      // {label: '主键', prop: 'id', content: 'id', width: '68px'},
       {label: '图标', prop: 'icon', slot: 'icon', content: 'icon', width: '68px'},
       {label: '标题', prop: 'name', content: 'name', sortable: 'custom', width: ''},
       {label: '路径', prop: 'path', content: 'path', sortable: 'custom', width: ''},
       {label: '创建时间', prop: 'create_time', content: 'create_time', sortable: 'custom', width: ''},
       {label: '修改时间', prop: 'update_time', content: 'update_time', sortable: 'custom', width: ''},
-      {label: '状态', prop: 'status', slot: 'status', content: 'status', sortable: 'custom', width: '68px'},
+      {label: '权限', prop: 'authority', content: 'authority', sortable: 'custom', width: ''},
+      {label: '状态', prop: 'status', slot: 'status', content: 'status', sortable: 'custom', width: '70px'},
       {label: '操作', width: '150px', slot: 'button'},
+//{type:"status",prop:"",content:"",sortable:"custom",width:"",minWidth:"",align:"",headerAlign:"",fixed:"",formatter:""}
     ],
     data: []
-  };
+  } as { head: TableHead[]; data: { [key: string]: string }[] };
 
   TableListSave(row) {
     console.log(row)
@@ -80,13 +96,15 @@ export default class SettingMenu extends Vue {
 
   getTableList() {
     menuList('get', {
-      success: ({data: {list, param}}) => {
-        list.forEach(item => {
-          item.statusType = item.status ? 'success' : 'danger'
-          item.statusName = item.status ? '启用' : '停用'
+      success: ({data}) => {
+        console.log(data)
+        data.forEach((item: { [key: string]: any }) => {
+          item.statusType = item.state ? 'success' : 'danger'
+          item.statusName = item.state ? '启用' : '停用'
         })
-        this.tableList.data = list
-        this.page = param
+        console.log(data);
+        this.tableList.data = data
+        // this.page = param
       }
     })
   }

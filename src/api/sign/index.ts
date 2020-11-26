@@ -8,7 +8,7 @@ const login = (data: { [key: string]: string } | undefined, {success, error, the
 // 激活
 const activation = (data: { [key: string]: string } | undefined, {success, error, then}: Parameter) => __axios(api + 'activation', {params: data, success, error, then}, 'get');
 //
-export default (type: 'login' | 'create', {data, success, error, then}: Parameter) => {
+export default (type: 'login' | 'create' | 'activation', {data, success, error, then}: Parameter) => {
     data && (data['uuid'] = window.Config['uuid']);
     const func = {
         login: () => login(data, {success, error, then}),

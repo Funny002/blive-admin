@@ -1,6 +1,7 @@
 <template>
   <el-select
       :remote="item.remote"
+      @change="selectChange"
       :loading="item.loading"
       :disabled="item.disabled"
       v-model="value[item.name]"
@@ -28,5 +29,12 @@ import {FormItem} from "@/components/form-list/interface";
 export default class FormSelect extends Vue {
   @Prop() value?: string;
   @Prop() item?: FormItem;
+
+  // 回调
+  selectChange(value: string | number) {
+    if (this.item && this.item.name) {
+      this.$emit('change', this.item.name, value)
+    }
+  }
 }
 </script>

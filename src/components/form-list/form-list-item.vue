@@ -1,6 +1,6 @@
 <template>
   <el-form-item :class="['formList-item',item.class]" :label="item.label" :prop="item.prop" :rules="item.rules">
-    <component :is="model" :item="item" :value="value"/>
+    <component :is="model" :item="item" :value="value" @change="componentChange" @btn-click="btnClick"/>
   </el-form-item>
 </template>
 <script lang="ts">
@@ -51,6 +51,16 @@ export default class FormListItem extends Vue {
 
   mounted() {
     this.$nextTick(() => this.getModel())
+  }
+
+  // 回调映射
+  btnClick(name: string) {
+    this.$emit('btn-click', name)
+  }
+
+  // 回调映射
+  componentChange(name: string, value: never) {
+    this.$emit('change', name, value)
   }
 }
 </script>

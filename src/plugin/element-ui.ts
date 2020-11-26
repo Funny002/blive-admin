@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import {Avatar, Button, Card, Checkbox, Col, DatePicker, Dialog, Dropdown, DropdownItem, DropdownMenu, Form, FormItem, Icon, Input, Loading, Message, MessageBox, Notification, Option, OptionGroup, Pagination, RadioButton, Row, Select, Table, TableColumn, TabPane, Tabs, Tag} from 'element-ui';
+import {Avatar, Button, Card, Checkbox, Col, DatePicker, Dialog, Dropdown, DropdownItem, DropdownMenu, Form, FormItem, Icon, Input, Loading, Message, MessageBox, Notification, Option, OptionGroup, Pagination, Radio, RadioButton, Row, Select, Table, TableColumn, TabPane, Tabs, Tag} from 'element-ui';
 import '@/assets/scss/element-ui.scss'
 
 Vue.use(Pagination);
@@ -15,7 +15,7 @@ Vue.use(DropdownItem);
 // Vue.use(MenuItemGroup);
 Vue.use(Input);
 // Vue.use(InputNumber);
-// Vue.use(Radio);
+Vue.use(Radio);
 // Vue.use(RadioGroup);
 Vue.use(RadioButton);
 Vue.use(Checkbox);
@@ -77,7 +77,7 @@ Vue.use(Card);
 // Vue.use(PageHeader);
 // Vue.use(CascaderPanel);
 Vue.use(Loading.directive);
-Vue.prototype.$ELEMENT = {size: 'small', zIndex: 1000};
+Vue.prototype.$ELEMENT = {size: 'mini', zIndex: 1000};
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

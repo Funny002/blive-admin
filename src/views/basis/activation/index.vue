@@ -17,9 +17,9 @@ import sign from '@/api/sign'
 @Component
 export default class Activation extends Vue {
   isLoad = true
-  status = null;
   loadText = '.';
-  setItem = null;
+  setItem = 0;
+  status: boolean | number | null = null;
 
   textLoading() {
     const lock = 500;
@@ -40,7 +40,7 @@ export default class Activation extends Vue {
     }, 500)
   }
 
-  onActivation(data) {
+  onActivation(data: any) {
     sign('activation', {
       data,
       then: ({code, msg}) => {

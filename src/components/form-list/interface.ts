@@ -1,6 +1,6 @@
 type ElSelect = 'select' | 'selectTree';
 type ElInput = 'text' | 'password' | 'textarea';
-type ElDatePicker = 'year' | 'month' | 'date' | 'week' | 'datetime' | 'monthrange' | 'datetimerange' | 'daterange';
+type ElDatePicker = 'year' | 'month' | 'date' | 'week' | 'datetime' | 'monthrange' | 'datetimerange' | 'daterange' | 'yearrange';
 export type Type = ElDatePicker | ElSelect | ElInput;
 
 export interface ItemBtn {
