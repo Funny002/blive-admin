@@ -3,6 +3,10 @@ import {Vue} from "vue-property-decorator";
 export type Size = 'mini' | 'small' | 'medium';
 export type TableDom = Vue | Element | Vue[] | Element[] | null;
 
+export interface DefaultObj {
+    [key: string]: never;
+}
+
 export interface TableHead {
     type?: 'index' | 'status' | 'Button' | 'selection' | 'radio' | 'expand'; // 类型
     // type?: string; // 类型
@@ -22,4 +26,13 @@ export interface TableHead {
     headerAlign?: 'left' | 'right' | 'center'; // 表头字体浮动
     selectable?: ((row?: object, index?: number) => boolean); // 专用 selectable
     formatter?: ((row?: object, column?: never, cellValue?: never, index?: number) => never); // 格式化
+
 }
+
+// 默认配置项
+export const defaultConfig = {
+    width: '50px',
+    align: 'center',
+    minWidth: '50px',
+    headerAlign: "center"
+} as TableHead

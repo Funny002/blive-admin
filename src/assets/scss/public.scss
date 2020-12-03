@@ -13,17 +13,17 @@
 
 body {
   font-size: 14px;
-  text-align: center;
+  //text-align: center;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, Avenir, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  .var-theme {
-    $--theme: #2c3e50;
-    $--theme-color: #f0f1ef;
-    /* theme */
-    @import "theme";
-  }
-}
+//@media (prefers-color-scheme: dark) {
+//  .var-theme {
+//    $--theme: #2c3e50;
+//    $--theme-color: #f0f1ef;
+//    /* theme */
+//    @import "theme";
+//  }
+//}

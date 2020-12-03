@@ -17,21 +17,6 @@
           <el-icon :name="row['icon']"/>
         </template>
       </el-table-column>
-
-      <el-table-column slot="status" slot-scope="{item}" :label="item.label" :prop="item.prop" :width="item.width" align="center" :sortable="item.sortable">
-        <template slot-scope="{row}">
-          <el-tag :type="row['statusType']">{{ row['statusName'] }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column slot="button" slot-scope="{item}" :label="item.label">
-        <template slot-scope="{row}">
-          <el-button v-if="row.state" type="text" @click.stop="TableListSave(row)">停用</el-button>
-          <el-button v-else type="text" @click.stop="TableListSave(row)">启用</el-button>
-          <el-button type="text" @click.stop="TableListSave(row)">修改</el-button>
-          <el-button type="text" @click.stop="TableListRemove(row)">删除</el-button>
-        </template>
-      </el-table-column>
     </table-list>
 
     <el-pagination
@@ -63,13 +48,14 @@ export default class SettingMenu extends Vue {
   formList: FormItem[] = [
     {span: 5, placeholder: "标题", type: 'text', name: "name"},
     {span: 8, placeholder: ['创建开始时间', '创建结束时间'], type: 'daterange', name: "create_time"},
-    {span: 8, placeholder: ['修改开始时间', '修改结束时间'], type: 'daterange', name: "update_time"},
+    // {span: 8, placeholder: ['修改开始时间', '修改结束时间'], type: 'daterange', name: "update_time"},
+    {span: 8, type: 'daterange', name: "update_time"},
     {span: 3, placeholder: "状态", type: 'select', name: "state", select: [{label: '启用', value: 1}, {label: '停用', value: 0}]},
   ];
   //
   tableList = {
     head: [
-      {label: '序号', type: 'index', width: '70px'},
+      {label: '序号', type: 'index'},
       // {label: '单选框', type: 'radio', width: '70px'},
       // {label: '序号', type: 'selection', width: '70px'},
       // {label: '主键', prop: 'id', content: 'id', width: '68px'},
@@ -79,20 +65,19 @@ export default class SettingMenu extends Vue {
       {label: '创建时间', prop: 'create_time', content: 'create_time', sortable: 'custom', width: ''},
       {label: '修改时间', prop: 'update_time', content: 'update_time', sortable: 'custom', width: ''},
       {label: '权限', prop: 'authority', content: 'authority', sortable: 'custom', width: ''},
-      {label: '状态', prop: 'status', slot: 'status', content: 'status', sortable: 'custom', width: '70px'},
-      {label: '操作', width: '150px', slot: 'button'},
-//{type:"status",prop:"",content:"",sortable:"custom",width:"",minWidth:"",align:"",headerAlign:"",fixed:"",formatter:""}
+      {label: "状态", type: 'state', content: 'statusName', contentType: 'statusType', sortable: 'custom'},
+      {label: "操作", type: 'button', content: 'state', operation: ['state', 'save', 'view', 'view']}
     ],
     data: []
   } as { head: TableHead[]; data: { [key: string]: string }[] };
 
-  TableListSave(row) {
-    console.log(row)
-  }
-
-  TableListRemove(row) {
-    console.log(row)
-  }
+  // TableListSave(row) {
+  //   console.log(row)
+  // }
+  //
+  // TableListRemove(row) {
+  //   console.log(row)
+  // }
 
   getTableList() {
     menuList('get', {

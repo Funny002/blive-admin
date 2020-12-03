@@ -4,11 +4,16 @@ type ElDatePicker = 'year' | 'month' | 'date' | 'week' | 'datetime' | 'monthrang
 export type Type = ElDatePicker | ElSelect | ElInput;
 
 export interface ItemBtn {
-    [key: string]: string
+    type: 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'text';
+    name: string;
+    label: string;
+    icon?: string;
+    plain?: boolean;
+    disabled?: boolean;
 }
 
 export interface ItemRules {
-    [key: string]: any
+    [key: string]: any;
 }
 
 export interface DatePicker {
@@ -31,7 +36,7 @@ export interface Input {
     max?: number;
     append?: string;
     prepend?: string;
-    btnList?: ItemBtn[]
+    btnList?: ItemBtn[];
     suffixIcon?: string;
     prefixIcon?: string;
 }
@@ -43,7 +48,7 @@ export interface Select {
     filterable?: boolean;
     filterMethod?: ((arr0: string) => void);
     remoteMethod?: ((arr0: string) => void);
-    select?: { value: string | boolean | number, label: string }[] // 选择框
+    option?: { value: string | boolean | number; label: string }[]; // 选择框
 }
 
 export interface FormItem extends Input, Select, DatePicker {

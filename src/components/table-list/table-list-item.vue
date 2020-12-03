@@ -6,16 +6,20 @@
       :width="item.width"
       :align="item.align"
       show-overflow-tooltip
-      v-if="item.show||true"
+      v-if="item.show!==false"
       :sortable="item.sortable"
       :fixed="item.fixed||false"
       :formatter="item.formatter"
-      :selectable="item.selectable"
-      :minWidth="item.width||'50px'"
       :headerAlign="item.headerAlign"
+      :minWidth="item.minWidth||'50px'"
   >
-    <template v-if="item.type!=='selection'" slot-scope="{row,$index}">
-      <slot :row="row" :$index="$index"/>
+    <template slot="" slot-scope="{column, $index}">
+      <!-- header -->
+      <slot name="header" :column="column" :$index="$index"/>
+    </template>
+    <!-- default -->
+    <template slot-scope="{ row, column, $index}">
+      <slot :row="row" :column="column" :$index="$index"/>
     </template>
   </el-table-column>
 </template>

@@ -1,29 +1,27 @@
 <template>
   <table-list-item :item="getItem">
-    <template slot-scope="{row}">
-      <el-radio class="tableList-radio" v-model="value" :label="row[item.content]" @change="radioChange"/>
-    </template>
+    <el-radio slot-scope="{row}" class="tableList-radio" v-model="value" :label="row[item.content]" @change="onChange"/>
   </table-list-item>
 </template>
-
 
 <script lang="ts">
 import TableListItem from "@/components/table-list/table-list-item.vue";
 import {Component, Prop, Vue} from "vue-property-decorator";
-import {TableHead} from "@/components/table-list/interface";
+import {defaultConfig, TableHead} from "@/components/table-list/interface";
 
-@Component({
-  components: {TableListItem}
-})
+@Component({components: {TableListItem}})
 export default class TableRadio extends Vue {
   @Prop() item?: TableHead;
-  @Prop() value?: TableHead;
+  @Prop({default: ''}) value?: TableHead;
 
   get getItem() {
-    return Object.assign({}, this.item, {align: 'center', headerAlign: 'center'} as TableHead)
+    return Object.assign({}, defaultConfig, this.item)
   }
 
-  radioChange(value: never) {
+  /** 回调 - 内容改变
+   * @param value
+   */
+  onChange(value: string | number) {
     this.$emit('change', value)
   }
 }

@@ -1,66 +1,50 @@
 <template>
   <el-form-item :class="['formList-item',item.class]" :label="item.label" :prop="item.prop" :rules="item.rules">
-    <component :is="model" :item="item" :value="value" @change="componentChange" @btn-click="btnClick"/>
+    <form-date-picker v-if="datePicker.includes(item.type)" :item="item" :value="value" @change="onChange"/>
+    <form-select v-else-if="select.includes(item.type)" :item="item" :value="value" :option="option && option[item.name]" @change="onChange"/>
+    <form-input v-else-if="input.includes(item.type)" :item="item" :value="value" :btnList="btnList && btnList[item.name]" @change="onChange" @click="onClick"/>
   </el-form-item>
 </template>
 <script lang="ts">
-import {FormItem, Type} from './interface';
-import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
+import {FormItem, ItemBtn, Type} from './interface';
+import {Component, Prop, Vue} from 'vue-property-decorator';
+//
+import FormDatePicker from "./module/form-date-picker.vue";
+import FormSelect from "./module/form-select.vue";
+import FormInput from "./module/form-input.vue";
 
-@Component
+@Component({
+  components: {FormSelect, FormInput, FormDatePicker}
+})
 export default class FormListItem extends Vue {
   @Prop() value?: string;
   @Prop() item?: FormItem;
-  model: (() => Promise<any>) | null = null;
+  // 可通过外部传入, 通过 item.name 定位
+  @Prop() btnList?: { [key: string]: ItemBtn };
+  @Prop() option?: { [key: string]: string | boolean };
+  //
+  select: Type[] = ['select', 'selectTree'];
+  input: Type[] = ['text', 'password', 'textarea'];
+  datePicker: Type[] = ['year', 'month', 'date', 'week', 'datetime', 'datetimerange', 'daterange'];
 
-  getModel() {
-    const getModel = (type: 'datePicker' | 'select' | 'input') => {
-      const func = {
-        datePicker: () => {
-          this.model = () => import('./module/form-date-picker.vue');
-        },
-        select: () => {
-          this.model = () => import('./module/form-select.vue');
-        },
-        input: () => {
-          this.model = () => import('./module/form-input.vue');
-        }
-      } as { [key: string]: (() => void) }
-      func[type]();
-    }
-    if (this.item) {
-      const {type}: FormItem = this.item;
-      const select: Type[] = ['select', 'selectTree'];
-      const input: Type[] = ['text', 'password', 'textarea'];
-      const datePicker: Type[] = ['year', 'month', 'date', 'week', 'datetime', 'datetimerange', 'daterange'];
-      if (datePicker.includes(type)) {
-        getModel('datePicker')
-      } else if (select.includes(type)) {
-        getModel('select')
-      } else if (input.includes(type)) {
-        getModel('input')
-      }
-    } else {
-      this.model = null
+  /** 映射 | 回调 - 点击事件
+   * @param name
+   * @param event
+   */
+  onClick(name: string, event: Event) {
+    if (name) {
+      this.$emit('click', name, event)
     }
   }
 
-  @Watch('item') getItem() {
-    this.$nextTick(() => this.getModel())
-  }
-
-  mounted() {
-    this.$nextTick(() => this.getModel())
-  }
-
-  // 回调映射
-  btnClick(name: string) {
-    this.$emit('btn-click', name)
-  }
-
-  // 回调映射
-  componentChange(name: string, value: never) {
-    this.$emit('change', name, value)
+  /** 映射 - 内容改变
+   * @param name
+   * @param value
+   */
+  onChange(name: string, value: string | [string] | null) {
+    if (this.item && this.item.name) {
+      this.$emit('change', name, value)
+    }
   }
 }
 </script>
