@@ -6,10 +6,10 @@
       :disabled="item.disabled"
       v-model="value[item.name]"
       :filterable="item.filterable"
-      :placeholder="item.placeholder"
       :remote-method="item.remoteMethod"
       :filter-method="item.filterMethod"
       :clearable="item.clearable!==false"
+      :placeholder="item.placeholder||'请选择'+item.label"
   >
     <template v-for="(option,key) in (option || item.option)">
       <el-option :key="key" v-if="!option.children" :label="option.label" :value="option.value"/>

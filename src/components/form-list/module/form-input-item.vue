@@ -8,9 +8,10 @@
       v-model="value[item.name]"
       :suffix-icon="item.suffixIcon"
       :prefix-icon="item.prefixIcon"
-      :placeholder="item.placeholder"
       :clearable="item.clearable||true"
-      :show-word-limit="item['showWord']">
+      :show-word-limit="item['showWord']"
+      :placeholder="item.placeholder||'请输入'+item.label"
+  >
     <form-input-item-expand v-if="item.prepend" slot="prepend" :item="item.prepend" @click="onClick"/>
     <form-input-item-expand v-if="item.append" slot="append" :item="item.append" @click="onClick"/>
   </el-input>
