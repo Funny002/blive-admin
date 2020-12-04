@@ -1,7 +1,6 @@
 <template>
   <div class="SettingMenu">
-
-    <div style="display: flex; width: 100%; margin-bottom: 10px; height: 32px;">
+    <div style="display: flex; width: 100%; margin-bottom: 10px; height: 28px;">
       <form-list :form-list="formList" :form-value="formValue" :row-gutter="10" label-width="10px"/>
       <div style="display: flex; margin-left: 10px;">
         <el-button type="primary" icon="el-icon-search">搜索</el-button>
