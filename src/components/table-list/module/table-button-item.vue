@@ -7,9 +7,9 @@ import {DefaultObj} from "@/components/table-list/interface";
 
 @Component
 export default class TableButtonItem extends Vue {
-  @Prop() content: string;
-  @Prop() row: DefaultObj;
-  @Prop() btn: { label: string; name: string };
+  @Prop() content?: string;
+  @Prop() row?: DefaultObj;
+  @Prop() btn?: { label: string; name: string };
 
   /** 回调 - 点击
    * @param name

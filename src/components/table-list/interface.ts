@@ -1,7 +1,7 @@
 export type Size = 'mini' | 'small' | 'medium';
 
 export interface DefaultObj {
-    [key: string]: never;
+    [key: string]: any;
 }
 
 export interface TableHead {
@@ -13,11 +13,11 @@ export interface TableHead {
     label?: string; // 表头
     content?: string; // 内容
     radioValue?: string; // radio 专用
-    operation?: [string]; // button 专用
     contentType?: string; // tag 专用
     width?: number | string; // 固定大小
     minWidth?: number | string; // 最小宽
     sortable?: boolean | 'custom'; // 排序
+    operation?: [DefaultObj | string]; // button 专用
     fixed?: 'left' | 'right' | false; // 浮动
     align?: 'left' | 'right' | 'center'; // 字体浮动
     headerAlign?: 'left' | 'right' | 'center'; // 表头字体浮动

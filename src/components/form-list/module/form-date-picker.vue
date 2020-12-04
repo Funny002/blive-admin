@@ -23,10 +23,10 @@ import {FormItem} from "@/components/form-list/interface";
 
 @Component
 export default class FormDatePicker extends Vue {
-  @Prop() value?: string;
+  @Prop() value?: object;
   @Prop() item?: FormItem;
   //
-  Placeholder = null;
+  Placeholder: string | string[] | null = null;
   format = 'yyyy-MM-dd';
   endPlaceholder = '结束日期';
   startPlaceholder = '开始日期';
@@ -42,17 +42,17 @@ export default class FormDatePicker extends Vue {
 
   // 初始化
   mounted() {
-    if (!['monthrange', 'datetimerange', 'daterange', 'yearrange'].includes(this.item.type)) {
-      this.Placeholder = this.item?.placeholder || '请选择'
-    } else {
-      if (Array.isArray(this.item?.placeholder)) {
-        [this.startPlaceholder, this.endPlaceholder] = this.item?.placeholder
-      } else {
-        this.endPlaceholder = (this.item?.placeholder || '请选择') + this.endPlaceholder;
-        this.startPlaceholder = (this.item?.placeholder || '请选择') + this.startPlaceholder;
-      }
-    }
     if (this.item) {
+      if (!['monthrange', 'datetimerange', 'daterange', 'yearrange'].includes(this.item.type)) {
+        this.Placeholder = this.item.placeholder || '请选择' + this.item.label
+      } else {
+        if (Array.isArray(this.item.placeholder)) {
+          [this.startPlaceholder, this.endPlaceholder] = this.item.placeholder
+        } else {
+          this.endPlaceholder = (this.item.placeholder || '请选择') + this.endPlaceholder;
+          this.startPlaceholder = (this.item.placeholder || '请选择') + this.startPlaceholder;
+        }
+      }
       switch (this.item.type) {
         case 'week':
           this.format = 'yyyy-WW'

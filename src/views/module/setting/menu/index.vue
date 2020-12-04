@@ -50,7 +50,7 @@ export default class SettingMenu extends Vue {
     {span: 8, placeholder: ['创建开始时间', '创建结束时间'], type: 'daterange', name: "create_time"},
     // {span: 8, placeholder: ['修改开始时间', '修改结束时间'], type: 'daterange', name: "update_time"},
     {span: 8, type: 'daterange', name: "update_time"},
-    {span: 3, placeholder: "状态", type: 'select', name: "state", select: [{label: '启用', value: 1}, {label: '停用', value: 0}]},
+    {span: 3, placeholder: "状态", type: 'select', name: "state", option: [{label: '启用', value: 1}, {label: '停用', value: 0}]},
   ];
   //
   tableList = {

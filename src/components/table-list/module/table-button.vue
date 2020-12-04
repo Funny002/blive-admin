@@ -2,7 +2,6 @@
   <table-list-item :item="item">
     <template slot-scope="{row}">
       <template v-for="(btnList,key) in operation">
-        <!--        <el-button :key="key" type="text" @click="event=>onClick(btnList.name,row)">{{ typeof btnList.label === 'string' ? btnList.label : btnList.label[parseInt(row[item.content])] }}</el-button>-->
         <table-button-item :key="key" :btn="btnList" :row="row" :content="item.content" @click="onClick"/>
       </template>
       <template v-if="operation_.length">
@@ -11,7 +10,6 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="(btnList,key) in operation_" :key="key">
               <table-button-item :key="key" :btn="btnList" :row="row" :content="item.content" @click="onClick"/>
-              <!--              <el-button :key="key" type="text" @click="onClick(btnList.name,row)">{{ typeof btnList.label === 'string' ? btnList.label : btnList.label[parseInt(row[item.content])] }}</el-button>-->
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -51,9 +49,11 @@ export default class TableButton extends Vue {
       'save': {name: 'save', label: '修改'},
       'delete': {name: 'delete', label: '删除'},
       'state': {name: 'state', label: ['启用', '停用']},
-    }
+    } as { [key: string]: DefaultObj }
     if (Object.hasOwnProperty.call(buttonList, name)) {
       return buttonList[name]
+    } else {
+      return false
     }
   }
 
@@ -64,10 +64,11 @@ export default class TableButton extends Vue {
 
   setButtonList() {
     this.emptyButtonList()
-    if (this.item.operation) {
+    if (this.item && this.item.operation) {
       const isInt = this.item.operation.length > 4 ? 3 : 4;
       this.item.operation.forEach((item, key) => {
-        this[key < isInt ? 'operation' : 'operation_'].push(typeof item === "string" ? this.getButtonList(item) : item)
+        const is = typeof item === "string" ? this.getButtonList(item) : item
+        is && this[key < isInt ? 'operation' : 'operation_'].push(is)
       })
     }
   }

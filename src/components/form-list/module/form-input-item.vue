@@ -22,7 +22,7 @@ import {FormItem} from "@/components/form-list/interface";
 
 @Component({components: {FormInputItemExpand}})
 export default class FormInputItem extends Vue {
-  @Prop() value?: string;
+  @Prop() value?: object;
   @Prop() item?: FormItem;
 
   /** 回调 - 内容改变

@@ -23,11 +23,11 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import {FormItem, ItemBtn} from "@/components/form-list/interface";
+import {FormItem} from "@/components/form-list/interface";
 
 @Component
 export default class FormSelect extends Vue {
-  @Prop() value?: string;
+  @Prop() value?: object;
   @Prop() item?: FormItem;
   // 可通过外部传入
   @Prop() option?: { [key: string]: never } | boolean | undefined;

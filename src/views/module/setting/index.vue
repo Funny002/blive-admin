@@ -14,11 +14,10 @@
 </template>
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import contentDef from './menu/index.vue';
 
 @Component
 export default class Setting extends Vue {
-  content = contentDef
+  content: (() => Promise<any>) = () => import('./menu/index.vue')
   //
   tabsKeys = 'user'
   tabsList = [
