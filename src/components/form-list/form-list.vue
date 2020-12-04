@@ -43,6 +43,8 @@ export default class FormList extends Vue {
   // 可通过外部传入, 通过 item.name 定位
   @Prop() btnList?: { [key: string]: ItemBtn };
   @Prop() option?: { [key: string]: string | boolean };
+  //
+  formListDom: Vue | Element | Vue[] | Element[] | null = null;
 
   // formListDom = null
 
@@ -61,9 +63,7 @@ export default class FormList extends Vue {
    * @param value
    */
   onChange(name: string, value: string | [string] | null) {
-    if (this.item && this.item.name) {
-      this.$emit('change', name, value)
-    }
+    this.$emit('change', name, value)
   }
 
   /** 获取表单dom
@@ -72,27 +72,27 @@ export default class FormList extends Vue {
     if (!this.formListDom) {
       this.formListDom = this.$refs.FormList
     }
-    return this.formListDom
+    return this.formListDom as ElForm
   }
 
   /** 方法映射 - 表单重置
    */
   resetFields() {
-    (this.$refs.FormList as ElForm).resetFields();
+    this.getDom().resetFields();
   }
 
   /** 方法映射 - 移除表单验证
    * @param props
    */
   clearValidate(props: [string] | string | undefined = undefined) {
-    (this.$refs.FormList as ElForm).clearValidate(props);
+    this.getDom().clearValidate(props);
   }
 
   /**  方法映射 - 表单校验
    * @param func
    */
   validate(func: (arg0: boolean) => void) {
-    (this.$refs.FormList as ElForm).validate((event: boolean) => func(event));
+    this.getDom().validate((event: boolean) => func(event));
   }
 }
 </script>

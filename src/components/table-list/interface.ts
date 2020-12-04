@@ -1,7 +1,4 @@
-import {Vue} from "vue-property-decorator";
-
 export type Size = 'mini' | 'small' | 'medium';
-export type TableDom = Vue | Element | Vue[] | Element[] | null;
 
 export interface DefaultObj {
     [key: string]: never;

@@ -42,7 +42,7 @@ export default class FormListItem extends Vue {
    * @param value
    */
   onChange(name: string, value: string | [string] | null) {
-    if (this.item && this.item.name) {
+    if (this.item?.name) {
       this.$emit('change', name, value)
     }
   }

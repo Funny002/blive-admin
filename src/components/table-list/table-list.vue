@@ -61,7 +61,8 @@ export default class TableList extends Vue {
   @Prop() selectable?: Function; // selection 专用
   @Prop({default: 1}) pageSize?: number; // index 专用
   @Prop({default: 1}) pageIndex?: number; // index 专用
-
+  //
+  tableDom: Vue | Element | Vue[] | Element[] | null = null;
 
   /** 回调 - button 点击
    * @param name
@@ -78,7 +79,7 @@ export default class TableList extends Vue {
     if (!this.tableDom) {
       this.tableDom = this.$refs['TableList']
     }
-    return this.tableDom
+    return this.tableDom as ElTable
   }
 
   /** 文本点击
@@ -109,22 +110,22 @@ export default class TableList extends Vue {
    */
   toggleSelection(array: [], is: undefined | boolean = undefined) {
     if (Array.isArray(array)) {
-      array.forEach((item: { [key: string]: never }) => (this.getDom() as ElTable).toggleRowSelection(item, is))
+      array.forEach((item: { [key: string]: never }) => this.getDom().toggleRowSelection(item, is))
     } else {
-      (this.getDom() as ElTable).clearSelection()
+      this.getDom().clearSelection()
     }
   }
 
   /** 映射 - 清空排序
    */
   clearSort() {
-    (this.getDom() as ElTable).doLayout()
+    this.getDom().doLayout()
   }
 
   /** 映射 - 重新布局
    */
   doLayout() {
-    (this.getDom() as ElTable).doLayout()
+    this.getDom().doLayout()
   }
 }
 </script>
